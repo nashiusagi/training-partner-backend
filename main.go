@@ -1,7 +1,9 @@
 package main
 
 import (
-	"net/http"
+	"training-partner/controllers"
+	"training-partner/repositories"
+	"training-partner/usecases"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -21,21 +23,16 @@ func main() {
 	}
 	db.AutoMigrate(&Post{})
 
+	postRepository := repositories.NewPostRepository(db)
+	postUseCase := usecases.NewPostUsecase(postRepository)
+	postController := controllers.NewPostController(postUseCase)
+
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.String(200, "Hello World")
 	})
 
-	r.GET("/posts", func(c *gin.Context) {
-		var posts []Post
-		if err := db.Find(&posts).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
-			return
-		} else {
-			db.Find(&posts)
-			c.JSON(http.StatusOK, posts)
-		}
-	})
+	r.GET("/posts", postController.GetAll)
 
 	r.Run()
 }
