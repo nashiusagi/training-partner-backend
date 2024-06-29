@@ -1,9 +1,11 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 	"training-partner/usecases"
+
+	"github.com/gin-gonic/gin"
 )
 
 type PostController struct {
@@ -22,4 +24,15 @@ func (c *PostController) GetAll(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, posts)
+}
+
+func (c *PostController) FindById(ctx *gin.Context) {
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	post, err := c.postUsecase.FindById(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, post)
 }

@@ -6,8 +6,8 @@ import (
 	"training-partner/usecases"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 type Post struct {
@@ -17,7 +17,7 @@ type Post struct {
 }
 
 func main() {
-	db, err := gorm.Open("sqlite3", "resources/post.db")
+	db, err := gorm.Open(sqlite.Open("resources/post.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -33,6 +33,7 @@ func main() {
 	})
 
 	r.GET("/posts", postController.GetAll)
+	r.GET("/posts/:id", postController.FindById)
 
 	r.Run()
 }

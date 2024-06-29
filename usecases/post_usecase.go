@@ -7,6 +7,7 @@ import (
 
 type PostUsecase interface {
 	GetAll() ([]*domains.Post, error)
+	FindById(id int) (*domains.Post, error)
 }
 
 type postUseCase struct {
@@ -19,4 +20,8 @@ func NewPostUsecase(postRepository repositories.PostRepository) PostUsecase {
 
 func (u *postUseCase) GetAll() ([]*domains.Post, error) {
 	return u.postRepository.GetAll()
+}
+
+func (u *postUseCase) FindById(id int) (*domains.Post, error) {
+	return u.postRepository.FindById(id)
 }

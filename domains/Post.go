@@ -1,9 +1,7 @@
 package domains
 
-import "github.com/jinzhu/gorm"
-
 type Post struct {
-	gorm.Model
+	ID        uint `gorm:"primary_key"`
 	Title string
 	Body  string
 }
