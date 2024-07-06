@@ -18,3 +18,15 @@ jobs:
 
       - name: Run Format Check
         run: make fmt-check
+
+  unit-test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+
+      - name: Run Unit Test
+        run: make test 
