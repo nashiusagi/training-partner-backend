@@ -6,9 +6,9 @@ import (
 	"training-partner/repositories"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"github.com/stretchr/testify/assert"
 )
 
 func NewDbMock() (*gorm.DB, sqlmock.Sqlmock, error) {
@@ -57,7 +57,6 @@ func TestGetAll(t *testing.T) {
 	// 	t.Errorf("Test Find Posts: %v", err)
 	// }
 }
-
 
 func TestFindById(t *testing.T) {
 	// Arrange

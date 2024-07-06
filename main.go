@@ -21,7 +21,10 @@ func main() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.AutoMigrate(&Post{})
+
+	if err := db.AutoMigrate(&Post{}); err != nil {
+		return
+	}
 
 	postRepository := repositories.NewPostRepository(db)
 	postUseCase := usecases.NewPostUsecase(postRepository)
@@ -35,5 +38,7 @@ func main() {
 	r.GET("/posts", postController.GetAll)
 	r.GET("/posts/:id", postController.FindById)
 
-	r.Run()
+	if err := r.Run(); err != nil {
+		return
+	}
 }
