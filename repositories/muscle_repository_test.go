@@ -7,22 +7,9 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
 
-func NewDbMock() (*gorm.DB, sqlmock.Sqlmock, error) {
-	_, mock, err := sqlmock.New()
-	if err != nil {
-		return nil, mock, err
-	}
-
-	mockDB, err := gorm.Open(sqlite.Open("../resources/training_partner.db"), &gorm.Config{})
-
-	return mockDB, mock, err
-}
-
-func TestMenuRepositoryGetAll(t *testing.T) {
+func TestMuscleRepositoryGetAll(t *testing.T) {
 	// Arrange
 	mockDB, mock, err := NewDbMock()
 
@@ -42,12 +29,12 @@ func TestMenuRepositoryGetAll(t *testing.T) {
 		WillReturnRows(rows)
 
 	// Act
-	menuRepository := repositories.NewMenuRepository(mockDB)
-	menus, err := menuRepository.GetAll()
+	muscleRepository := repositories.NewMuscleRepository(mockDB)
+	muscles, err := muscleRepository.GetAll()
 
 	// Assert
 	assert.Equal(t, err, nil)
-	assert.Equal(t, menus[0].MenuId, uint(1))
+	assert.Equal(t, muscles[0].MuscleId, uint(1))
 
 	if err != nil {
 		t.Fatal(err)
@@ -58,7 +45,7 @@ func TestMenuRepositoryGetAll(t *testing.T) {
 	// }
 }
 
-func TestMenuRepositoryFindById(t *testing.T) {
+func TestMuscleRepositoryFindById(t *testing.T) {
 	// Arrange
 	mockDB, mock, err := NewDbMock()
 
@@ -78,12 +65,13 @@ func TestMenuRepositoryFindById(t *testing.T) {
 		WillReturnRows(rows)
 
 	// Act
-	menuRepository := repositories.NewMenuRepository(mockDB)
-	menu, err := menuRepository.FindById(1)
+	muscleRepository := repositories.NewMuscleRepository(mockDB)
+	muscle, err := muscleRepository.FindById(1)
 
 	// Assert
 	assert.Equal(t, err, nil)
-	assert.Equal(t, menu.MenuId, uint(1))
+	assert.Equal(t, muscle.MuscleId, uint(1))
+	assert.Equal(t, muscle.Name, "大腿四頭筋")
 
 	if err != nil {
 		t.Fatal(err)
