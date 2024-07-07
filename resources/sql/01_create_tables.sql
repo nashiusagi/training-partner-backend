@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS menus;
+
+CREATE TABLE menus (
+    menu_id INTEGER PRIMARY KEY NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    registered_id INTEGER NOT NULL
+);
