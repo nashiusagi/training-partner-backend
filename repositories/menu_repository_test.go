@@ -17,7 +17,7 @@ func NewDbMock() (*gorm.DB, sqlmock.Sqlmock, error) {
 		return nil, mock, err
 	}
 
-	mockDB, err := gorm.Open(sqlite.Open("../resources/post.db"), &gorm.Config{})
+	mockDB, err := gorm.Open(sqlite.Open("../resources/training_partner.db"), &gorm.Config{})
 
 	return mockDB, mock, err
 }
@@ -36,25 +36,25 @@ func TestGetAll(t *testing.T) {
 
 	mock.
 		ExpectQuery(
-			"SELECT * FROM posts",
+			"SELECT * FROM menus",
 		).
 		WithArgs(1).
 		WillReturnRows(rows)
 
 	// Act
-	postRepository := repositories.NewPostRepository(mockDB)
-	posts, err := postRepository.GetAll()
+	menuRepository := repositories.NewMenuRepository(mockDB)
+	menus, err := menuRepository.GetAll()
 
 	// Assert
 	assert.Equal(t, err, nil)
-	assert.Equal(t, posts[0].ID, uint(1))
+	assert.Equal(t, menus[0].MenuId, uint(1))
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// if err := mock.ExpectationsWereMet(); err != nil {
-	// 	t.Errorf("Test Find Posts: %v", err)
+	// 	t.Errorf("Test Find Menus: %v", err)
 	// }
 }
 
@@ -72,26 +72,24 @@ func TestFindById(t *testing.T) {
 
 	mock.
 		ExpectQuery(regexp.QuoteMeta(
-			`SELECT * FROM "posts" WHERE id = ?`,
+			`SELECT * FROM "menus" WHERE id = ?`,
 		)).
 		WithArgs(1).
 		WillReturnRows(rows)
 
 	// Act
-	postRepository := repositories.NewPostRepository(mockDB)
-	post, err := postRepository.FindById(1)
+	menuRepository := repositories.NewMenuRepository(mockDB)
+	menu, err := menuRepository.FindById(1)
 
 	// Assert
 	assert.Equal(t, err, nil)
-	assert.Equal(t, post.ID, uint(1))
-	assert.Equal(t, post.Title, "title1")
-	assert.Equal(t, post.Body, "body1")
+	assert.Equal(t, menu.MenuId, uint(1))
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// if err := mock.ExpectationsWereMet(); err != nil {
-	// 	t.Errorf("Test Find Posts: %v", err)
+	// 	t.Errorf("Test Find Menus: %v", err)
 	// }
 }
