@@ -2,23 +2,20 @@ package main
 
 import (
 	"training-partner/controllers"
-	"training-partner/domains"
 	"training-partner/repositories"
 	"training-partner/usecases"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func main() {
 	db, err := gorm.Open(sqlite.Open("resources/training_partner.db"), &gorm.Config{})
+	db.Logger = db.Logger.LogMode(logger.Info)
 	if err != nil {
 		panic("failed to connect database")
-	}
-
-	if err := db.AutoMigrate(&domains.Menu{}); err != nil {
-		return
 	}
 
 	menuRepository := repositories.NewMenuRepository(db)
