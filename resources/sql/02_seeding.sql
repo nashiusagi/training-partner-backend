@@ -35,7 +35,7 @@ INSERT INTO muscles (muscle_id, name, body_part_id) VALUES
     (13, '菱形筋', 5),
     (14, '広背筋', 5);
 
-INSERT INTO menus_muscles (id, menu_id, muscle_id) VALUES
+INSERT INTO menu_muscles_target_to_train (id, menu_id, muscle_id) VALUES
     (1, 1, 1),
     (2, 1, 2),
     (3, 1, 3),

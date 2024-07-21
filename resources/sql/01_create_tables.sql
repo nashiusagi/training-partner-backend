@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS menus;
 DROP TABLE IF EXISTS body_parts;
 DROP TABLE IF EXISTS muscles;
-DROP TABLE IF EXISTS menus_muscles;
+DROP TABLE IF EXISTS menu_muscles_target_to_train;
 
 CREATE TABLE menus (
     menu_id INTEGER PRIMARY KEY NOT NULL,
@@ -20,8 +20,10 @@ CREATE TABLE muscles (
     body_part_id INTEGER NOT NULL
 );
 
-CREATE TABLE menus_muscles (
+CREATE TABLE menu_muscles_target_to_train (
     id INTEGER PRIMARY KEY NOT NULL,
     menu_id INTEGER NOT NULL,
-    muscle_id INTEGER NOT NULL
+    muscle_id INTEGER NOT NULL,
+    FOREIGN KEY (menu_id) REFERENCES menus(menu_id),
+    FOREIGN KEY (muscle_id) REFERENCES muscles(muscle_id)
 );
