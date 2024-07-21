@@ -22,7 +22,7 @@ func NewDbMock() (*gorm.DB, sqlmock.Sqlmock, error) {
 	return mockDB, mock, err
 }
 
-func TestGetAll(t *testing.T) {
+func TestMenuRepositoryGetAll(t *testing.T) {
 	// Arrange
 	mockDB, mock, err := NewDbMock()
 
@@ -58,7 +58,7 @@ func TestGetAll(t *testing.T) {
 	// }
 }
 
-func TestFindById(t *testing.T) {
+func TestMenuRepositoryFindById(t *testing.T) {
 	// Arrange
 	mockDB, mock, err := NewDbMock()
 
