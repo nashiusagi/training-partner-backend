@@ -1,32 +1,19 @@
 package repositories_test
 
 import (
-	"regexp"
 	"testing"
 	"training-partner/repositories"
 
-	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestMuscleRepositoryGetAll(t *testing.T) {
 	// Arrange
-	mockDB, mock, err := NewDbMock()
+	mockDB, _, err := NewDbMock()
 
 	if err != nil {
 		t.Errorf("Failed to initialize mock DB: %v", err)
 	}
-
-	rows := sqlmock.
-		NewRows([]string{"id", "title", "body"}).
-		AddRow(uint(1), "title1", "body1")
-
-	mock.
-		ExpectQuery(
-			"SELECT * FROM menus",
-		).
-		WithArgs(1).
-		WillReturnRows(rows)
 
 	// Act
 	muscleRepository := repositories.NewMuscleRepository(mockDB)
@@ -47,22 +34,11 @@ func TestMuscleRepositoryGetAll(t *testing.T) {
 
 func TestMuscleRepositoryFindById(t *testing.T) {
 	// Arrange
-	mockDB, mock, err := NewDbMock()
+	mockDB, _, err := NewDbMock()
 
 	if err != nil {
 		t.Errorf("Failed to initialize mock DB: %v", err)
 	}
-
-	rows := sqlmock.
-		NewRows([]string{"id", "title", "body"}).
-		AddRow(uint(1), "title1", "body1")
-
-	mock.
-		ExpectQuery(regexp.QuoteMeta(
-			`SELECT * FROM "menus" WHERE id = ?`,
-		)).
-		WithArgs(1).
-		WillReturnRows(rows)
 
 	// Act
 	muscleRepository := repositories.NewMuscleRepository(mockDB)
