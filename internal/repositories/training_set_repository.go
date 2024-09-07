@@ -11,6 +11,7 @@ import (
 type TrainingSetRepository interface {
 	GetAll() ([]*domains.TrainingSet, error)
 	FindById(id int) (*domains.TrainingSet, error)
+	Create(exercise_id uint, weight uint, repetition uint) error
 }
 
 type trainingSetRepository struct {
@@ -37,4 +38,21 @@ func (r *trainingSetRepository) FindById(id int) (*domains.TrainingSet, error) {
 		return nil, err
 	}
 	return trainingSet, nil
+}
+
+func (r *trainingSetRepository) Create(exerciseId uint, weight uint, repetition uint) error {
+	r.db.Logger = r.db.Logger.LogMode(logger.Info)
+	var trainingSet = domains.TrainingSet{
+		ExerciseId: exerciseId,
+		Weight:     weight,
+		Repetition: repetition,
+	}
+
+	return r.db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&trainingSet).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 }

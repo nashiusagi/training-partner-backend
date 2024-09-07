@@ -1,6 +1,7 @@
 package repositories_test
 
 import (
+	"regexp"
 	"testing"
 	"training-partner/internal/repositories"
 
@@ -73,4 +74,20 @@ func TestTrainingSetRepositoryFindById(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestTrainingSetRepositoryCreate(t *testing.T) {
+	mockDB, mock, err := NewDbMock()
+
+	if err != nil {
+		t.Errorf("Failed to initialize mock DB: %v", err)
+	}
+
+	mock.ExpectExec(regexp.QuoteMeta("INSERT INTO training_set")).WithArgs(uint(1), uint(105), uint(10))
+
+	trainingSetRepository := repositories.NewTrainingSetRepository(mockDB)
+	err = trainingSetRepository.Create(uint(1), uint(105), uint(10))
+
+	// Assert
+	assert.Equal(t, err, nil)
 }
