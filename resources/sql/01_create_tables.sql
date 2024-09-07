@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS exercises;
 DROP TABLE IF EXISTS body_parts;
 DROP TABLE IF EXISTS muscles;
 DROP TABLE IF EXISTS exercise_muscles_target_to_train;
+DROP TABLE IF EXISTS training_sets;
 
 CREATE TABLE exercises (
     exercise_id INTEGER PRIMARY KEY NOT NULL,
@@ -27,4 +28,11 @@ CREATE TABLE exercise_muscles_target_to_train (
     muscle_id INTEGER NOT NULL,
     FOREIGN KEY (exercise_id) REFERENCES exercises(exercise_id),
     FOREIGN KEY (muscle_id) REFERENCES muscles(muscle_id)
+);
+
+CREATE TABLE training_sets (
+    training_set_id INTEGER PRIMARY KEY NOT NULL,
+    exercise_id INTEGER NOT NULL,
+    `weight` INTEGER NOT NULL,
+    repetition INTEGER NOT NULL
 );

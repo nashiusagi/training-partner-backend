@@ -55,3 +55,7 @@ INSERT INTO exercise_muscles_target_to_train (id, exercise_id, muscle_id) VALUES
     (17, 8, 12),
     (18, 8, 13),
     (19, 8, 14);
+
+INSERT INTO training_sets (training_set_id, exercise_id, `weight`, repetition) VALUES
+    (1, 1, 95, 10),
+    (2, 1, 85, 10);
