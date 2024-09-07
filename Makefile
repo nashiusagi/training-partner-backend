@@ -30,7 +30,7 @@ fmt-check:
 coverage:
 	# lcov
 	$(GO) test -cover ./... -coverprofile=coverage.out
-	bin/gconv2lconv -infile=coverage.out -outfile=coverage.lcov
+	bin/gcov2lcov -infile=coverage.out -outfile=coverage.lcov
 	genhtml coverage.lcov -o outputs
 	# go coverage
 	$(GO) tool cover -html=coverage.out -o outputs/gocoverage.html
