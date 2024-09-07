@@ -21,6 +21,9 @@ func main() {
 	exerciseRepository := repositories.NewExerciseRepository(db)
 	exerciseUseCase := usecases.NewExerciseUsecase(exerciseRepository)
 	exerciseController := controllers.NewExerciseController(exerciseUseCase)
+	trainingSetRepository := repositories.NewTrainingSetRepository(db)
+	trainingSetUsecase := usecases.NewTrainingSetUsecase(trainingSetRepository)
+	trainingSetController := controllers.NewTrainingSetController(trainingSetUsecase)
 
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
@@ -29,6 +32,8 @@ func main() {
 
 	r.GET("/exercises", exerciseController.GetAll)
 	r.GET("/exercises/:id", exerciseController.FindById)
+	r.GET("/training_sets", trainingSetController.GetAll)
+	r.GET("/training_sets/:id", trainingSetController.FindById)
 
 	if err := r.Run(); err != nil {
 		return
