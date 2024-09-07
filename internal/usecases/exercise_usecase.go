@@ -14,7 +14,7 @@ type exerciseUseCase struct {
 	exerciseRepository repositories.ExerciseRepository
 }
 
-func NewMenuUsecase(exerciseRepository repositories.ExerciseRepository) ExerciseUsecase {
+func NewExerciseUsecase(exerciseRepository repositories.ExerciseRepository) ExerciseUsecase {
 	return &exerciseUseCase{exerciseRepository}
 }
 
