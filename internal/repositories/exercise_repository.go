@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+//go:generate mockery --name ExerciseRepository
 type ExerciseRepository interface {
 	GetAll() ([]*domains.Exercise, error)
 	FindById(id int) (*domains.Exercise, error)
