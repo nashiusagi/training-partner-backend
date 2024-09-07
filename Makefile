@@ -29,7 +29,7 @@ fmt-check:
 .PHONY: coverage
 coverage:
 	# lcov
-	$(GO) test -cover ./... -coverprofile=coverage.out
+	$(GO) test -cover ./internal/... -coverprofile=coverage.out
 	bin/gcov2lcov -infile=coverage.out -outfile=coverage.lcov
 	genhtml coverage.lcov -o outputs
 	# go coverage
