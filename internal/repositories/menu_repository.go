@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"training-partner/domains"
+	"training-partner/internal/domains"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

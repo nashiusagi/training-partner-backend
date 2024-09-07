@@ -1,10 +1,15 @@
+SHELL = /bin/bash
+ROOT_DIR = $(shell pwd)
+
 GO ?= go
 GOFMT ?= gofmt "-s"
 GOFILES := $(shell find . -name "*.go")
+GOBIN = $(ROOT_DIR)/bin
+export PATH := $(GOBIN):$(PATH)
 
 .PHONY: test
 test:
-	$(GO) test ./...
+	$(GO) test -cover ./internal/...
 
 .PHONY: fmt
 # Ensure consistent code formatting.
@@ -20,3 +25,16 @@ fmt-check:
 		echo "$${diff}"; \
 		exit 1; \
 	fi;
+
+.PHONY: coverage
+coverage:
+	# lcov
+	$(GO) test -cover ./internal/... -coverprofile=coverage.out
+	bin/gcov2lcov -infile=coverage.out -outfile=coverage.lcov
+	genhtml coverage.lcov -o outputs
+	# go coverage
+	$(GO) tool cover -html=coverage.out -o outputs/gocoverage.html
+
+.PHONY: tools
+tools:
+	GOBIN=$(GOBIN) $(GO) install github.com/jandelgado/gcov2lcov@v1.0.5

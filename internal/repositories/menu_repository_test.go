@@ -3,7 +3,7 @@ package repositories_test
 import (
 	"regexp"
 	"testing"
-	"training-partner/repositories"
+	"training-partner/internal/repositories"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
@@ -17,7 +17,7 @@ func NewDbMock() (*gorm.DB, sqlmock.Sqlmock, error) {
 		return nil, mock, err
 	}
 
-	mockDB, err := gorm.Open(sqlite.Open("../resources/training_partner.db"), &gorm.Config{})
+	mockDB, err := gorm.Open(sqlite.Open("../../resources/training_partner.db"), &gorm.Config{})
 
 	return mockDB, mock, err
 }

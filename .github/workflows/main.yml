@@ -1,0 +1,37 @@
+---
+name: Main workflows
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-coverage:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          cache: false
+      
+      - name: Install lcov
+        run: sudo apt-get update && sudo apt-get install -y lcov
+
+      - name: Install Tools
+        run: make tools
+
+      - name: Prepare Output Dir
+        run: mkdir outputs
+
+      - name: Measure Coverage
+        run: scripts/coverage.sh
+
+      - name: Deploy Coverage Result 
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./outputs

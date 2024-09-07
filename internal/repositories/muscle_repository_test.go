@@ -2,7 +2,7 @@ package repositories_test
 
 import (
 	"testing"
-	"training-partner/repositories"
+	"training-partner/internal/repositories"
 
 	"github.com/stretchr/testify/assert"
 )

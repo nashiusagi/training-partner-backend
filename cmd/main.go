@@ -1,9 +1,9 @@
 package main
 
 import (
-	"training-partner/controllers"
-	"training-partner/repositories"
-	"training-partner/usecases"
+	"training-partner/internal/controllers"
+	"training-partner/internal/repositories"
+	"training-partner/internal/usecases"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"

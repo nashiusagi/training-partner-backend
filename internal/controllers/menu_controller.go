@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 	"strconv"
-	"training-partner/usecases"
+	"training-partner/internal/usecases"
 
 	"github.com/gin-gonic/gin"
 )
