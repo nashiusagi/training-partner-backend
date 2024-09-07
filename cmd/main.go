@@ -34,6 +34,7 @@ func main() {
 	r.GET("/exercises/:id", exerciseController.FindById)
 	r.GET("/training_sets", trainingSetController.GetAll)
 	r.GET("/training_sets/:id", trainingSetController.FindById)
+	r.POST("/training_sets/create", trainingSetController.Create)
 
 	if err := r.Run(); err != nil {
 		return

@@ -13,6 +13,20 @@ type TrainingSetRepository struct {
 	mock.Mock
 }
 
+// Create provides a mock function with given fields: exercise_id, weight, repetition
+func (_m *TrainingSetRepository) Create(exercise_id uint, weight uint, repetition uint) error {
+	ret := _m.Called(exercise_id, weight, repetition)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(uint, uint, uint) error); ok {
+		r0 = rf(exercise_id, weight, repetition)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // FindById provides a mock function with given fields: id
 func (_m *TrainingSetRepository) FindById(id int) (*domains.TrainingSet, error) {
 	ret := _m.Called(id)

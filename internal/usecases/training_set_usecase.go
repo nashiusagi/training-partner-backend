@@ -8,6 +8,7 @@ import (
 type TrainingSetUsecase interface {
 	GetAll() ([]*domains.TrainingSet, error)
 	FindById(id int) (*domains.TrainingSet, error)
+	Create(exerciseId uint, weight uint, repetition uint) error
 }
 
 type trainingSetUseCase struct {
@@ -24,4 +25,8 @@ func (u *trainingSetUseCase) GetAll() ([]*domains.TrainingSet, error) {
 
 func (u *trainingSetUseCase) FindById(id int) (*domains.TrainingSet, error) {
 	return u.trainingSetRepository.FindById(id)
+}
+
+func (u *trainingSetUseCase) Create(exerciseId uint, weight uint, repetition uint) error {
+	return u.trainingSetRepository.Create(exerciseId, weight, repetition)
 }

@@ -56,3 +56,17 @@ func TestTrainigSetUseCaseFindById(t *testing.T) {
 		assert.Equal(t, trainingSet.TrainingSetId, uint(1))
 	})
 }
+
+func TestTrainigSetUseCaseCreate(t *testing.T) {
+	mockTrainingSetRepository := new(mocks.TrainingSetRepository)
+
+	t.Run("success", func(t *testing.T) {
+		mockTrainingSetRepository.On("Create", uint(1), uint(105), uint(10)).Return(nil).Once()
+
+		trainingSetUseCase := usecases.NewTrainingSetUsecase(mockTrainingSetRepository)
+
+		err := trainingSetUseCase.Create(uint(1), uint(105), uint(10))
+
+		assert.NoError(t, err)
+	})
+}
