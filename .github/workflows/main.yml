@@ -4,8 +4,7 @@ name: Main workflows
 on:
   push:
     branches:
-      # TODO: mainに変更
-      - feature/**
+      - main
 
 jobs:
   deploy-coverage:
