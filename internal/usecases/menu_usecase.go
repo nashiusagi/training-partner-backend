@@ -1,8 +1,8 @@
 package usecases
 
 import (
-	"training-partner/domains"
-	"training-partner/repositories"
+	"training-partner/internal/domains"
+	"training-partner/internal/repositories"
 )
 
 type MenuUsecase interface {

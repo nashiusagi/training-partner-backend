@@ -4,7 +4,7 @@ GOFILES := $(shell find . -name "*.go")
 
 .PHONY: test
 test:
-	$(GO) test ./...
+	$(GO) test ./internal/...
 
 .PHONY: fmt
 # Ensure consistent code formatting.
