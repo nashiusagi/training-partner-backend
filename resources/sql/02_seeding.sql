@@ -1,4 +1,4 @@
-INSERT INTO menus (menu_id, name, registered_id) VALUES 
+INSERT INTO exercises (exercise_id, name, registered_id) VALUES 
     (1, 'レッグプレス', 5),
     (2, 'トーソローテーション', 16),
     (3, 'バックエクステンション', 2),
@@ -35,7 +35,7 @@ INSERT INTO muscles (muscle_id, name, body_part_id) VALUES
     (13, '菱形筋', 5),
     (14, '広背筋', 5);
 
-INSERT INTO menu_muscles_target_to_train (id, menu_id, muscle_id) VALUES
+INSERT INTO exercise_muscles_target_to_train (id, exercise_id, muscle_id) VALUES
     (1, 1, 1),
     (2, 1, 2),
     (3, 1, 3),
@@ -56,3 +56,6 @@ INSERT INTO menu_muscles_target_to_train (id, menu_id, muscle_id) VALUES
     (18, 8, 13),
     (19, 8, 14);
 
+INSERT INTO training_sets (training_set_id, exercise_id, `weight`, repetition) VALUES
+    (1, 1, 95, 10),
+    (2, 1, 85, 10);

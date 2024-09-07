@@ -18,17 +18,23 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	menuRepository := repositories.NewMenuRepository(db)
-	menuUseCase := usecases.NewMenuUsecase(menuRepository)
-	menuController := controllers.NewMenuController(menuUseCase)
+	exerciseRepository := repositories.NewExerciseRepository(db)
+	exerciseUseCase := usecases.NewExerciseUsecase(exerciseRepository)
+	exerciseController := controllers.NewExerciseController(exerciseUseCase)
+	trainingSetRepository := repositories.NewTrainingSetRepository(db)
+	trainingSetUsecase := usecases.NewTrainingSetUsecase(trainingSetRepository)
+	trainingSetController := controllers.NewTrainingSetController(trainingSetUsecase)
 
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.String(200, "Hello World")
 	})
 
-	r.GET("/menus", menuController.GetAll)
-	r.GET("/menus/:id", menuController.FindById)
+	r.GET("/exercises", exerciseController.GetAll)
+	r.GET("/exercises/:id", exerciseController.FindById)
+	r.GET("/training_sets", trainingSetController.GetAll)
+	r.GET("/training_sets/:id", trainingSetController.FindById)
+	r.POST("/training_sets/create", trainingSetController.Create)
 
 	if err := r.Run(); err != nil {
 		return
