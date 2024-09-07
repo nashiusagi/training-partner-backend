@@ -40,3 +40,37 @@ func TestTrainingSetRepositoryGetAll(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestTrainingSetRepositoryFindById(t *testing.T) {
+	// Arrange
+	mockDB, mock, err := NewDbMock()
+
+	if err != nil {
+		t.Errorf("Failed to initialize mock DB: %v", err)
+	}
+
+	rows := sqlmock.
+		NewRows([]string{"training_set_id", "exercise_id", "weight", "repetition"}).
+		AddRow(uint(1), uint(1), uint(95), uint(10)).
+		AddRow(uint(1), uint(1), uint(85), uint(10))
+
+	mock.
+		ExpectQuery(
+			"SELECT * FROM training_sets WHERE training_set_id=1",
+		).
+		WithArgs(1).
+		WillReturnRows(rows)
+
+	// Act
+	trainingSetRepository := repositories.NewTrainingSetRepository(mockDB)
+	trainingSet, err := trainingSetRepository.FindById(1)
+
+	// Assert
+	assert.Equal(t, err, nil)
+	assert.Equal(t, trainingSet.TrainingSetId, uint(1))
+	assert.Equal(t, trainingSet.Weight, uint(95))
+
+	if err != nil {
+		t.Fatal(err)
+	}
+}
