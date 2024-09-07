@@ -1,0 +1,32 @@
+---
+name: Main workflows
+
+on:
+  push:
+    branches:
+      # TODO: mainに変更
+      - feature/**
+
+jobs:
+  deploy-coverage:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          cache: false
+
+      - name: Install Tools
+        run: make tools
+
+      - name: Measure Coverage
+        run: scripts/coverage.sh
+
+      - name: Deploy Coverage Result 
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
