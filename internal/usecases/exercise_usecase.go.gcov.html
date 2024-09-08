@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.lcov</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-09-08 03:53:38</td>
+            <td class="headerValue">2024-09-08 07:53:40</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -76,17 +76,17 @@
 <a name="14"><span class="lineNum">      14 </span>            :         exerciseRepository repositories.ExerciseRepository</a>
 <a name="15"><span class="lineNum">      15 </span>            : }</a>
 <a name="16"><span class="lineNum">      16 </span>            : </a>
-<a name="17"><span class="lineNum">      17 </span><span class="lineNoCov">          0 : func NewExerciseUsecase(exerciseRepository repositories.ExerciseRepository) ExerciseUsecase {</span></a>
-<a name="18"><span class="lineNum">      18 </span><span class="lineNoCov">          0 :         return &amp;exerciseUseCase{exerciseRepository}</span></a>
-<a name="19"><span class="lineNum">      19 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">          1 : func NewExerciseUsecase(exerciseRepository repositories.ExerciseRepository) ExerciseUsecase {</span></a>
+<a name="18"><span class="lineNum">      18 </span><span class="lineCov">          1 :         return &amp;exerciseUseCase{exerciseRepository}</span></a>
+<a name="19"><span class="lineNum">      19 </span><span class="lineCov">          1 : }</span></a>
 <a name="20"><span class="lineNum">      20 </span>            : </a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineNoCov">          0 : func (u *exerciseUseCase) GetAll() ([]*domains.Exercise, error) {</span></a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineNoCov">          0 :         return u.exerciseRepository.GetAll()</span></a>
-<a name="23"><span class="lineNum">      23 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">          1 : func (u *exerciseUseCase) GetAll() ([]*domains.Exercise, error) {</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">          1 :         return u.exerciseRepository.GetAll()</span></a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">          1 : }</span></a>
 <a name="24"><span class="lineNum">      24 </span>            : </a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineNoCov">          0 : func (u *exerciseUseCase) FindById(id int) (*domains.Exercise, error) {</span></a>
-<a name="26"><span class="lineNum">      26 </span><span class="lineNoCov">          0 :         return u.exerciseRepository.FindById(id)</span></a>
-<a name="27"><span class="lineNum">      27 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">          1 : func (u *exerciseUseCase) FindById(id int) (*domains.Exercise, error) {</span></a>
+<a name="26"><span class="lineNum">      26 </span><span class="lineCov">          1 :         return u.exerciseRepository.FindById(id)</span></a>
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

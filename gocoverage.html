@@ -67,7 +67,7 @@
 				
 				<option value="file5">training-partner/internal/repositories/training_set_repository.go (82.4%)</option>
 				
-				<option value="file6">training-partner/internal/usecases/exercise_usecase.go (0.0%)</option>
+				<option value="file6">training-partner/internal/usecases/exercise_usecase.go (100.0%)</option>
 				
 				<option value="file7">training-partner/internal/usecases/training_set_usecase.go (100.0%)</option>
 				
@@ -401,15 +401,15 @@ type exerciseUseCase struct {
         exerciseRepository repositories.ExerciseRepository
 }
 
-func NewExerciseUsecase(exerciseRepository repositories.ExerciseRepository) ExerciseUsecase <span class="cov0" title="0">{
+func NewExerciseUsecase(exerciseRepository repositories.ExerciseRepository) ExerciseUsecase <span class="cov8" title="1">{
         return &amp;exerciseUseCase{exerciseRepository}
 }</span>
 
-func (u *exerciseUseCase) GetAll() ([]*domains.Exercise, error) <span class="cov0" title="0">{
+func (u *exerciseUseCase) GetAll() ([]*domains.Exercise, error) <span class="cov8" title="1">{
         return u.exerciseRepository.GetAll()
 }</span>
 
-func (u *exerciseUseCase) FindById(id int) (*domains.Exercise, error) <span class="cov0" title="0">{
+func (u *exerciseUseCase) FindById(id int) (*domains.Exercise, error) <span class="cov8" title="1">{
         return u.exerciseRepository.FindById(id)
 }</span>
 </pre>
