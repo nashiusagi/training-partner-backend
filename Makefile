@@ -7,9 +7,11 @@ GOFILES := $(shell find . -name "*.go")
 GOBIN = $(ROOT_DIR)/bin
 export PATH := $(GOBIN):$(PATH)
 
+TEST_DIRS := $(shell $(GO) list ./... | grep -v mocks)
+
 .PHONY: test
 test:
-	$(GO) test -cover ./internal/...
+	$(GO) test -cover $(TEST_DIRS)
 
 .PHONY: fmt
 # Ensure consistent code formatting.
@@ -29,7 +31,7 @@ fmt-check:
 .PHONY: coverage
 coverage:
 	# lcov
-	$(GO) test -cover ./internal/... -coverprofile=coverage.out
+	$(GO) test -cover $(TEST_DIRS) -coverprofile=coverage.out
 	bin/gcov2lcov -infile=coverage.out -outfile=coverage.lcov
 	genhtml coverage.lcov -o outputs
 	# go coverage
