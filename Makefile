@@ -9,7 +9,7 @@ export PATH := $(GOBIN):$(PATH)
 
 .PHONY: test
 test:
-	$(GO) test -cover ./internal/...
+	$(GO) test -cover ./...
 
 .PHONY: fmt
 # Ensure consistent code formatting.
@@ -29,7 +29,7 @@ fmt-check:
 .PHONY: coverage
 coverage:
 	# lcov
-	$(GO) test -cover ./internal/... -coverprofile=coverage.out
+	$(GO) test -cover ./... -coverprofile=coverage.out
 	bin/gcov2lcov -infile=coverage.out -outfile=coverage.lcov
 	genhtml coverage.lcov -o outputs
 	# go coverage

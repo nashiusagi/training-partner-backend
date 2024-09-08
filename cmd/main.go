@@ -11,13 +11,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func main() {
-	db, err := gorm.Open(sqlite.Open("resources/training_partner.db"), &gorm.Config{})
-	db.Logger = db.Logger.LogMode(logger.Info)
-	if err != nil {
-		panic("failed to connect database")
-	}
-
+func setupRouter(db *gorm.DB) *gin.Engine {
 	exerciseRepository := repositories.NewExerciseRepository(db)
 	exerciseUseCase := usecases.NewExerciseUsecase(exerciseRepository)
 	exerciseController := controllers.NewExerciseController(exerciseUseCase)
@@ -35,6 +29,17 @@ func main() {
 	r.GET("/training_sets", trainingSetController.GetAll)
 	r.GET("/training_sets/:id", trainingSetController.FindById)
 	r.POST("/training_sets/create", trainingSetController.Create)
+
+	return r
+}
+
+func main() {
+	db, err := gorm.Open(sqlite.Open("resources/training_partner.db"), &gorm.Config{})
+	db.Logger = db.Logger.LogMode(logger.Info)
+	if err != nil {
+		panic("failed to connect database")
+	}
+	r := setupRouter(db)
 
 	if err := r.Run(); err != nil {
 		return
