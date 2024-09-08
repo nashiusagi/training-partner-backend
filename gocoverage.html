@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>controllers: Go Coverage Report</title>
+		<title>cmd: Go Coverage Report</title>
 		<style>
 			body {
 				background: black;
@@ -55,23 +55,21 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">training-partner/internal/controllers/exercise_controller.go (0.0%)</option>
+				<option value="file0">training-partner/cmd/main.go (68.2%)</option>
 				
-				<option value="file1">training-partner/internal/controllers/training_set_controller.go (0.0%)</option>
+				<option value="file1">training-partner/internal/controllers/exercise_controller.go (66.7%)</option>
 				
-				<option value="file2">training-partner/internal/repositories/exercise_repository.go (81.8%)</option>
+				<option value="file2">training-partner/internal/controllers/training_set_controller.go (62.5%)</option>
 				
-				<option value="file3">training-partner/internal/repositories/muscle_repository.go (81.8%)</option>
+				<option value="file3">training-partner/internal/repositories/exercise_repository.go (81.8%)</option>
 				
-				<option value="file4">training-partner/internal/repositories/training_set_repository.go (82.4%)</option>
+				<option value="file4">training-partner/internal/repositories/muscle_repository.go (81.8%)</option>
 				
-				<option value="file5">training-partner/internal/usecases/exercise_usecase.go (0.0%)</option>
+				<option value="file5">training-partner/internal/repositories/training_set_repository.go (82.4%)</option>
 				
-				<option value="file6">training-partner/internal/usecases/mocks/ExerciseRepository.go (0.0%)</option>
+				<option value="file6">training-partner/internal/usecases/exercise_usecase.go (0.0%)</option>
 				
-				<option value="file7">training-partner/internal/usecases/mocks/TrainingSetRepository.go (69.7%)</option>
-				
-				<option value="file8">training-partner/internal/usecases/training_set_usecase.go (100.0%)</option>
+				<option value="file7">training-partner/internal/usecases/training_set_usecase.go (100.0%)</option>
 				
 				</select>
 			</div>
@@ -85,43 +83,52 @@
 		</div>
 		<div id="content">
 		
-		<pre class="file" id="file0" style="display: none">package controllers
+		<pre class="file" id="file0" style="display: none">package main
 
 import (
-        "net/http"
-        "strconv"
+        "training-partner/internal/controllers"
+        "training-partner/internal/repositories"
         "training-partner/internal/usecases"
 
         "github.com/gin-gonic/gin"
+        "gorm.io/driver/sqlite"
+        "gorm.io/gorm"
+        "gorm.io/gorm/logger"
 )
 
-type ExerciseController struct {
-        exerciseUsecase usecases.ExerciseUsecase
+func setupRouter(db *gorm.DB) *gin.Engine <span class="cov8" title="1">{
+        exerciseRepository := repositories.NewExerciseRepository(db)
+        exerciseUseCase := usecases.NewExerciseUsecase(exerciseRepository)
+        exerciseController := controllers.NewExerciseController(exerciseUseCase)
+        trainingSetRepository := repositories.NewTrainingSetRepository(db)
+        trainingSetUsecase := usecases.NewTrainingSetUsecase(trainingSetRepository)
+        trainingSetController := controllers.NewTrainingSetController(trainingSetUsecase)
+
+        r := gin.Default()
+        r.GET("/", func(c *gin.Context) </span><span class="cov8" title="1">{
+                c.String(200, "Hello World")
+        }</span>)
+
+        <span class="cov8" title="1">r.GET("/exercises", exerciseController.GetAll)
+        r.GET("/exercises/:id", exerciseController.FindById)
+        r.GET("/training_sets", trainingSetController.GetAll)
+        r.GET("/training_sets/:id", trainingSetController.FindById)
+        r.POST("/training_sets/create", trainingSetController.Create)
+
+        return r</span>
 }
 
-func NewExerciseController(exerciseUsecase usecases.ExerciseUsecase) *ExerciseController <span class="cov0" title="0">{
-        return &amp;ExerciseController{exerciseUsecase}
-}</span>
-
-func (c *ExerciseController) GetAll(ctx *gin.Context) <span class="cov0" title="0">{
-        exercises, err := c.exerciseUsecase.GetAll()
+func main() <span class="cov0" title="0">{
+        db, err := gorm.Open(sqlite.Open("resources/training_partner.db"), &amp;gorm.Config{})
+        db.Logger = db.Logger.LogMode(logger.Info)
         if err != nil </span><span class="cov0" title="0">{
-                ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                panic("failed to connect database")</span>
+        }
+        <span class="cov0" title="0">r := setupRouter(db)
+
+        if err := r.Run(); err != nil </span><span class="cov0" title="0">{
                 return
         }</span>
-
-        <span class="cov0" title="0">ctx.JSON(http.StatusOK, exercises)</span>
-}
-
-func (c *ExerciseController) FindById(ctx *gin.Context) <span class="cov0" title="0">{
-        id, _ := strconv.Atoi(ctx.Param("id"))
-        exercise, err := c.exerciseUsecase.FindById(id)
-        if err != nil </span><span class="cov0" title="0">{
-                ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-                return
-        }</span>
-
-        <span class="cov0" title="0">ctx.JSON(http.StatusOK, exercise)</span>
 }
 </pre>
 		
@@ -135,25 +142,65 @@ import (
         "github.com/gin-gonic/gin"
 )
 
+type ExerciseController struct {
+        exerciseUsecase usecases.ExerciseUsecase
+}
+
+func NewExerciseController(exerciseUsecase usecases.ExerciseUsecase) *ExerciseController <span class="cov8" title="1">{
+        return &amp;ExerciseController{exerciseUsecase}
+}</span>
+
+func (c *ExerciseController) GetAll(ctx *gin.Context) <span class="cov8" title="1">{
+        exercises, err := c.exerciseUsecase.GetAll()
+        if err != nil </span><span class="cov0" title="0">{
+                ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                return
+        }</span>
+
+        <span class="cov8" title="1">ctx.JSON(http.StatusOK, exercises)</span>
+}
+
+func (c *ExerciseController) FindById(ctx *gin.Context) <span class="cov8" title="1">{
+        id, _ := strconv.Atoi(ctx.Param("id"))
+        exercise, err := c.exerciseUsecase.FindById(id)
+        if err != nil </span><span class="cov0" title="0">{
+                ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                return
+        }</span>
+
+        <span class="cov8" title="1">ctx.JSON(http.StatusOK, exercise)</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package controllers
+
+import (
+        "net/http"
+        "strconv"
+        "training-partner/internal/usecases"
+
+        "github.com/gin-gonic/gin"
+)
+
 type TrainingSetController struct {
         trainingSetUsecase usecases.TrainingSetUsecase
 }
 
-func NewTrainingSetController(trainingSetUsecase usecases.TrainingSetUsecase) *TrainingSetController <span class="cov0" title="0">{
+func NewTrainingSetController(trainingSetUsecase usecases.TrainingSetUsecase) *TrainingSetController <span class="cov8" title="1">{
         return &amp;TrainingSetController{trainingSetUsecase}
 }</span>
 
-func (c *TrainingSetController) GetAll(ctx *gin.Context) <span class="cov0" title="0">{
+func (c *TrainingSetController) GetAll(ctx *gin.Context) <span class="cov8" title="1">{
         trainingSets, err := c.trainingSetUsecase.GetAll()
         if err != nil </span><span class="cov0" title="0">{
                 ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
                 return
         }</span>
 
-        <span class="cov0" title="0">ctx.JSON(http.StatusOK, trainingSets)</span>
+        <span class="cov8" title="1">ctx.JSON(http.StatusOK, trainingSets)</span>
 }
 
-func (c *TrainingSetController) FindById(ctx *gin.Context) <span class="cov0" title="0">{
+func (c *TrainingSetController) FindById(ctx *gin.Context) <span class="cov8" title="1">{
         id, _ := strconv.Atoi(ctx.Param("id"))
         trainingSet, err := c.trainingSetUsecase.FindById(id)
         if err != nil </span><span class="cov0" title="0">{
@@ -161,10 +208,10 @@ func (c *TrainingSetController) FindById(ctx *gin.Context) <span class="cov0" ti
                 return
         }</span>
 
-        <span class="cov0" title="0">ctx.JSON(http.StatusOK, trainingSet)</span>
+        <span class="cov8" title="1">ctx.JSON(http.StatusOK, trainingSet)</span>
 }
 
-func (c *TrainingSetController) Create(ctx *gin.Context) <span class="cov0" title="0">{
+func (c *TrainingSetController) Create(ctx *gin.Context) <span class="cov8" title="1">{
         stringExerciseId := ctx.PostForm("exercise_id")
         exerciseId, _ := strconv.ParseUint(stringExerciseId, 10, 64)
         stringWeight := ctx.PostForm("weight")
@@ -176,26 +223,26 @@ func (c *TrainingSetController) Create(ctx *gin.Context) <span class="cov0" titl
                 ctx.JSON(http.StatusBadRequest, gin.H{"status": "exercise Id must greater than 0"})
                 return
         }</span>
-        <span class="cov0" title="0">if weight == 0 </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if weight == 0 </span><span class="cov0" title="0">{
                 ctx.JSON(http.StatusBadRequest, gin.H{"status": "weight must greater than 0"})
                 return
         }</span>
-        <span class="cov0" title="0">if repetition == 0 </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if repetition == 0 </span><span class="cov0" title="0">{
                 ctx.JSON(http.StatusBadRequest, gin.H{"status": "repetition must greater than 0"})
                 return
         }</span>
 
-        <span class="cov0" title="0">err := c.trainingSetUsecase.Create(uint(exerciseId), uint(weight), uint(repetition))
+        <span class="cov8" title="1">err := c.trainingSetUsecase.Create(uint(exerciseId), uint(weight), uint(repetition))
         if err != nil </span><span class="cov0" title="0">{
                 ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
                 return
         }</span>
 
-        <span class="cov0" title="0">ctx.JSON(http.StatusOK, nil)</span>
+        <span class="cov8" title="1">ctx.JSON(http.StatusOK, nil)</span>
 }
 </pre>
 		
-		<pre class="file" id="file2" style="display: none">package repositories
+		<pre class="file" id="file3" style="display: none">package repositories
 
 import (
         "training-partner/internal/domains"
@@ -237,7 +284,7 @@ func (r *exerciseRepository) FindById(id int) (*domains.Exercise, error) <span c
 }
 </pre>
 		
-		<pre class="file" id="file3" style="display: none">package repositories
+		<pre class="file" id="file4" style="display: none">package repositories
 
 import (
         "training-partner/internal/domains"
@@ -278,7 +325,7 @@ func (r *muscleRepository) FindById(id int) (*domains.Muscle, error) <span class
 }
 </pre>
 		
-		<pre class="file" id="file4" style="display: none">package repositories
+		<pre class="file" id="file5" style="display: none">package repositories
 
 import (
         "training-partner/internal/domains"
@@ -338,7 +385,7 @@ func (r *trainingSetRepository) Create(exerciseId uint, weight uint, repetition 
 }
 </pre>
 		
-		<pre class="file" id="file5" style="display: none">package usecases
+		<pre class="file" id="file6" style="display: none">package usecases
 
 import (
         "training-partner/internal/domains"
@@ -367,175 +414,7 @@ func (u *exerciseUseCase) FindById(id int) (*domains.Exercise, error) <span clas
 }</span>
 </pre>
 		
-		<pre class="file" id="file6" style="display: none">// Code generated by mockery v0.0.0-dev. DO NOT EDIT.
-
-package mocks
-
-import (
-        domains "training-partner/internal/domains"
-
-        mock "github.com/stretchr/testify/mock"
-)
-
-// ExerciseRepository is an autogenerated mock type for the ExerciseRepository type
-type ExerciseRepository struct {
-        mock.Mock
-}
-
-// FindById provides a mock function with given fields: id
-func (_m *ExerciseRepository) FindById(id int) (*domains.Exercise, error) <span class="cov0" title="0">{
-        ret := _m.Called(id)
-
-        var r0 *domains.Exercise
-        if rf, ok := ret.Get(0).(func(int) *domains.Exercise); ok </span><span class="cov0" title="0">{
-                r0 = rf(id)
-        }</span> else<span class="cov0" title="0"> {
-                if ret.Get(0) != nil </span><span class="cov0" title="0">{
-                        r0 = ret.Get(0).(*domains.Exercise)
-                }</span>
-        }
-
-        <span class="cov0" title="0">var r1 error
-        if rf, ok := ret.Get(1).(func(int) error); ok </span><span class="cov0" title="0">{
-                r1 = rf(id)
-        }</span> else<span class="cov0" title="0"> {
-                r1 = ret.Error(1)
-        }</span>
-
-        <span class="cov0" title="0">return r0, r1</span>
-}
-
-// GetAll provides a mock function with given fields:
-func (_m *ExerciseRepository) GetAll() ([]*domains.Exercise, error) <span class="cov0" title="0">{
-        ret := _m.Called()
-
-        var r0 []*domains.Exercise
-        if rf, ok := ret.Get(0).(func() []*domains.Exercise); ok </span><span class="cov0" title="0">{
-                r0 = rf()
-        }</span> else<span class="cov0" title="0"> {
-                if ret.Get(0) != nil </span><span class="cov0" title="0">{
-                        r0 = ret.Get(0).([]*domains.Exercise)
-                }</span>
-        }
-
-        <span class="cov0" title="0">var r1 error
-        if rf, ok := ret.Get(1).(func() error); ok </span><span class="cov0" title="0">{
-                r1 = rf()
-        }</span> else<span class="cov0" title="0"> {
-                r1 = ret.Error(1)
-        }</span>
-
-        <span class="cov0" title="0">return r0, r1</span>
-}
-
-type mockConstructorTestingTNewExerciseRepository interface {
-        mock.TestingT
-        Cleanup(func())
-}
-
-// NewExerciseRepository creates a new instance of ExerciseRepository. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
-func NewExerciseRepository(t mockConstructorTestingTNewExerciseRepository) *ExerciseRepository <span class="cov0" title="0">{
-        mock := &amp;ExerciseRepository{}
-        mock.Mock.Test(t)
-
-        t.Cleanup(func() </span><span class="cov0" title="0">{ mock.AssertExpectations(t) }</span>)
-
-        <span class="cov0" title="0">return mock</span>
-}
-</pre>
-		
-		<pre class="file" id="file7" style="display: none">// Code generated by mockery v0.0.0-dev. DO NOT EDIT.
-
-package mocks
-
-import (
-        domains "training-partner/internal/domains"
-
-        mock "github.com/stretchr/testify/mock"
-)
-
-// TrainingSetRepository is an autogenerated mock type for the TrainingSetRepository type
-type TrainingSetRepository struct {
-        mock.Mock
-}
-
-// Create provides a mock function with given fields: exercise_id, weight, repetition
-func (_m *TrainingSetRepository) Create(exercise_id uint, weight uint, repetition uint) error <span class="cov8" title="1">{
-        ret := _m.Called(exercise_id, weight, repetition)
-
-        var r0 error
-        if rf, ok := ret.Get(0).(func(uint, uint, uint) error); ok </span><span class="cov0" title="0">{
-                r0 = rf(exercise_id, weight, repetition)
-        }</span> else<span class="cov8" title="1"> {
-                r0 = ret.Error(0)
-        }</span>
-
-        <span class="cov8" title="1">return r0</span>
-}
-
-// FindById provides a mock function with given fields: id
-func (_m *TrainingSetRepository) FindById(id int) (*domains.TrainingSet, error) <span class="cov8" title="1">{
-        ret := _m.Called(id)
-
-        var r0 *domains.TrainingSet
-        if rf, ok := ret.Get(0).(func(int) *domains.TrainingSet); ok </span><span class="cov0" title="0">{
-                r0 = rf(id)
-        }</span> else<span class="cov8" title="1"> {
-                if ret.Get(0) != nil </span><span class="cov8" title="1">{
-                        r0 = ret.Get(0).(*domains.TrainingSet)
-                }</span>
-        }
-
-        <span class="cov8" title="1">var r1 error
-        if rf, ok := ret.Get(1).(func(int) error); ok </span><span class="cov0" title="0">{
-                r1 = rf(id)
-        }</span> else<span class="cov8" title="1"> {
-                r1 = ret.Error(1)
-        }</span>
-
-        <span class="cov8" title="1">return r0, r1</span>
-}
-
-// GetAll provides a mock function with given fields:
-func (_m *TrainingSetRepository) GetAll() ([]*domains.TrainingSet, error) <span class="cov8" title="1">{
-        ret := _m.Called()
-
-        var r0 []*domains.TrainingSet
-        if rf, ok := ret.Get(0).(func() []*domains.TrainingSet); ok </span><span class="cov0" title="0">{
-                r0 = rf()
-        }</span> else<span class="cov8" title="1"> {
-                if ret.Get(0) != nil </span><span class="cov8" title="1">{
-                        r0 = ret.Get(0).([]*domains.TrainingSet)
-                }</span>
-        }
-
-        <span class="cov8" title="1">var r1 error
-        if rf, ok := ret.Get(1).(func() error); ok </span><span class="cov0" title="0">{
-                r1 = rf()
-        }</span> else<span class="cov8" title="1"> {
-                r1 = ret.Error(1)
-        }</span>
-
-        <span class="cov8" title="1">return r0, r1</span>
-}
-
-type mockConstructorTestingTNewTrainingSetRepository interface {
-        mock.TestingT
-        Cleanup(func())
-}
-
-// NewTrainingSetRepository creates a new instance of TrainingSetRepository. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
-func NewTrainingSetRepository(t mockConstructorTestingTNewTrainingSetRepository) *TrainingSetRepository <span class="cov0" title="0">{
-        mock := &amp;TrainingSetRepository{}
-        mock.Mock.Test(t)
-
-        t.Cleanup(func() </span><span class="cov0" title="0">{ mock.AssertExpectations(t) }</span>)
-
-        <span class="cov0" title="0">return mock</span>
-}
-</pre>
-		
-		<pre class="file" id="file8" style="display: none">package usecases
+		<pre class="file" id="file7" style="display: none">package usecases
 
 import (
         "training-partner/internal/domains"
