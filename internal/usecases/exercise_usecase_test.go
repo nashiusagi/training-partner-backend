@@ -31,7 +31,7 @@ func TestExerciseUseCaseGetAll(t *testing.T) {
 
 		mockExerciseRepository.On("GetAll", mock.Anything).Return(mockExercises, nil).Once()
 
-		exerciseUseCase := usecases.ExerciseUsecase(mockExerciseRepository)
+		exerciseUseCase := usecases.NewExerciseUsecase(mockExerciseRepository)
 
 		exercises, err := exerciseUseCase.GetAll()
 
@@ -60,7 +60,7 @@ func TestExerciseUseCaseFindById(t *testing.T) {
 
 		mockExerciseRepository.On("FindById", 1).Return(&mockExercise, nil).Once()
 
-		exerciseUseCase := usecases.ExerciseUsecase(mockExerciseRepository)
+		exerciseUseCase := usecases.NewExerciseUsecase(mockExerciseRepository)
 
 		exercise, err := exerciseUseCase.FindById(1)
 
