@@ -3,8 +3,8 @@ name: CI workflows
 
 on:
   push: 
-    branches:
-      - feature/**
+    branches-ignore:
+      - main 
 
 jobs:
   format-check:
