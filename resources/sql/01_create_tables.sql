@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS body_parts;
 DROP TABLE IF EXISTS muscles;
 DROP TABLE IF EXISTS exercise_muscles_target_to_train;
 DROP TABLE IF EXISTS training_sets;
+DROP TABLE IF EXISTS menus;
+DROP TABLE IF EXISTS menus_training_sets;
 
 CREATE TABLE exercises (
     exercise_id INTEGER PRIMARY KEY NOT NULL,
@@ -35,4 +37,16 @@ CREATE TABLE training_sets (
     exercise_id INTEGER NOT NULL,
     `weight` INTEGER NOT NULL,
     repetition INTEGER NOT NULL
+);
+
+CREATE TABLE menus (
+    menu_id INTEGER PRIMARY KEY NOT NULL,
+    date DATE NOT NULL
+);
+
+CREATE TABLE menus_training_sets (
+    menu_id INTEGER NOT NULL,
+    training_set_id INTEGER NOT NULL,
+    count INTEGER NOT NULL DEFAULT 1,
+    PRIMARY KEY (menu_id, training_set_id)
 );

@@ -59,3 +59,11 @@ INSERT INTO exercise_muscles_target_to_train (id, exercise_id, muscle_id) VALUES
 INSERT INTO training_sets (training_set_id, exercise_id, `weight`, repetition) VALUES
     (1, 1, 95, 10),
     (2, 1, 85, 10);
+
+INSERT INTO menus (menu_id, `date`) VALUES
+    (1, '2024-09-01'),
+    (2, '2024-09-05');
+
+INSERT INTO menus_training_sets (menu_id, training_set_id, `count`) VALUES
+    (1, 1, 3),
+    (2, 2, 3);
