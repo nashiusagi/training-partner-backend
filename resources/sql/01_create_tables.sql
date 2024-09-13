@@ -48,5 +48,7 @@ CREATE TABLE menus_training_sets (
     menu_id INTEGER NOT NULL,
     training_set_id INTEGER NOT NULL,
     count INTEGER NOT NULL DEFAULT 1,
-    PRIMARY KEY (menu_id, training_set_id)
+    PRIMARY KEY (menu_id, training_set_id),
+    FOREIGN KEY (menu_id) REFERENCES menus(menu_id),
+    FOREIGN KEY (training_set_id) REFERENCES training_sets(training_set_id)
 );
