@@ -12,11 +12,9 @@ import (
 func TestTrainingSetRepositoryGetAll(t *testing.T) {
 	// Arrange
 	mockDB, mock, err := NewDbMock()
-
 	if err != nil {
 		t.Errorf("Failed to initialize mock DB: %v", err)
 	}
-
 	rows := sqlmock.
 		NewRows([]string{"training_set_id", "exercise_id", "weight", "repetition"}).
 		AddRow(uint(1), uint(1), uint(95), uint(10)).
@@ -24,9 +22,7 @@ func TestTrainingSetRepositoryGetAll(t *testing.T) {
 
 	mock.
 		ExpectQuery(
-			"SELECT * FROM training_sets",
-		).
-		WithArgs(1).
+			regexp.QuoteMeta("SELECT * FROM `training_sets`")).
 		WillReturnRows(rows)
 
 	// Act
@@ -57,8 +53,7 @@ func TestTrainingSetRepositoryFindById(t *testing.T) {
 
 	mock.
 		ExpectQuery(
-			"SELECT * FROM training_sets WHERE training_set_id=1",
-		).
+			regexp.QuoteMeta("SELECT * FROM `training_sets` WHERE `training_sets`.`training_set_id` = ?")).
 		WithArgs(1).
 		WillReturnRows(rows)
 
@@ -83,7 +78,9 @@ func TestTrainingSetRepositoryCreate(t *testing.T) {
 		t.Errorf("Failed to initialize mock DB: %v", err)
 	}
 
-	mock.ExpectExec(regexp.QuoteMeta("INSERT INTO training_set")).WithArgs(uint(1), uint(105), uint(10))
+	mock.ExpectBegin()
+	mock.ExpectExec(regexp.QuoteMeta("INSERT INTO `training_sets` (`exercise_id`,`weight`,`repetition`) VALUES (?,?,?)")).WithArgs(uint(1), uint(105), uint(10)).WillReturnResult(sqlmock.NewResult(1, 1))
+	mock.ExpectCommit()
 
 	trainingSetRepository := repositories.NewTrainingSetRepository(mockDB)
 	err = trainingSetRepository.Create(uint(1), uint(105), uint(10))
