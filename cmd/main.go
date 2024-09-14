@@ -18,6 +18,9 @@ func setupRouter(db *gorm.DB) *gin.Engine {
 	trainingSetRepository := repositories.NewTrainingSetRepository(db)
 	trainingSetUsecase := usecases.NewTrainingSetUsecase(trainingSetRepository)
 	trainingSetController := controllers.NewTrainingSetController(trainingSetUsecase)
+	menuRepository := repositories.NewMenuRepository(db)
+	menuUsecase := usecases.NewMenuUsecase(menuRepository)
+	menuController := controllers.NewMenuController(menuUsecase)
 
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
@@ -29,6 +32,9 @@ func setupRouter(db *gorm.DB) *gin.Engine {
 	r.GET("/training_sets", trainingSetController.GetAll)
 	r.GET("/training_sets/:id", trainingSetController.FindById)
 	r.POST("/training_sets/create", trainingSetController.Create)
+	r.GET("/menus", menuController.GetAll)
+	r.GET("/menus/:id", menuController.FindById)
+	r.POST("/menus/create", menuController.Create)
 
 	return r
 }
