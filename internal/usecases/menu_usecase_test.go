@@ -70,3 +70,18 @@ func TestMenuUseCaseFindById(t *testing.T) {
 		assert.Equal(t, uint(1), menu.MenuId)
 	})
 }
+
+func TestMenuUseCaseCreate(t *testing.T) {
+	mockMenuRepository := new(mocks.MenuRepository)
+
+	t.Run("success", func(t *testing.T) {
+		var dummyDate = time.Date(2024, 9, 1, 0, 0, 0, 0, time.UTC)
+		mockMenuRepository.On("Create", dummyDate).Return(nil).Once()
+
+		menuUseCase := usecases.NewMenuUsecase(mockMenuRepository)
+
+		err := menuUseCase.Create(dummyDate)
+
+		assert.NoError(t, err)
+	})
+}

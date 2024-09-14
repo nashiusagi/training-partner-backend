@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"time"
 	"training-partner/internal/domains"
 	"training-partner/internal/repositories"
 )
@@ -8,6 +9,7 @@ import (
 type MenuUsecase interface {
 	GetAll() ([]*domains.Menu, error)
 	FindById(id int) (*domains.Menu, error)
+	Create(date time.Time) error
 }
 
 type menuUseCase struct {
@@ -24,4 +26,8 @@ func (u *menuUseCase) GetAll() ([]*domains.Menu, error) {
 
 func (u *menuUseCase) FindById(id int) (*domains.Menu, error) {
 	return u.menuRepository.FindById(id)
+}
+
+func (u *menuUseCase) Create(date time.Time) error {
+	return u.menuRepository.Create(date)
 }

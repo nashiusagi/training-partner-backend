@@ -1,6 +1,7 @@
 package repositories_test
 
 import (
+	"regexp"
 	"testing"
 	"time"
 	"training-partner/internal/repositories"
@@ -35,4 +36,20 @@ func TestMenuRepositoryFindById(t *testing.T) {
 
 	assert.Equal(t, nil, err)
 	assert.Equal(t, time.Date(2024, 9, 1, 0, 0, 0, 0, time.UTC), menu.Date)
+}
+
+func TestMenuRepositoryCreate(t *testing.T) {
+	mockDB, mock, err := NewDbMock()
+
+	if err != nil {
+		t.Errorf("Failed to initialize mock DB: %v", err)
+	}
+
+	mock.ExpectExec(regexp.QuoteMeta("INSERT INTO menus")).WithArgs(time.Date(2024, 12, 1, 0, 0, 0, 0, time.UTC))
+
+	menuRepository := repositories.NewMenuRepository(mockDB)
+	err = menuRepository.Create(time.Date(2024, 12, 1, 0, 0, 0, 0, time.UTC))
+
+	// Assert
+	assert.Equal(t, nil, err)
 }

@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"time"
 	"training-partner/internal/domains"
 
 	"gorm.io/gorm"
@@ -11,6 +12,7 @@ import (
 type MenuRepository interface {
 	GetAll() ([]*domains.Menu, error)
 	FindById(id int) (*domains.Menu, error)
+	Create(date time.Time) error
 }
 
 type menuRepository struct {
@@ -37,4 +39,19 @@ func (r *menuRepository) FindById(id int) (*domains.Menu, error) {
 		return nil, err
 	}
 	return menu, nil
+}
+
+func (r *menuRepository) Create(date time.Time) error {
+	r.db.Logger = r.db.Logger.LogMode(logger.Info)
+	var menu = domains.Menu{
+		Date: date,
+	}
+
+	return r.db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&menu).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 }
