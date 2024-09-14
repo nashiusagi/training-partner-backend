@@ -63,13 +63,13 @@
 				
 				<option value="file3">training-partner/internal/controllers/training_set_controller.go (62.5%)</option>
 				
-				<option value="file4">training-partner/internal/repositories/exercise_repository.go (81.8%)</option>
+				<option value="file4">training-partner/internal/repositories/exercise_repository.go (100.0%)</option>
 				
-				<option value="file5">training-partner/internal/repositories/menu_repository.go (82.4%)</option>
+				<option value="file5">training-partner/internal/repositories/menu_repository.go (100.0%)</option>
 				
-				<option value="file6">training-partner/internal/repositories/muscle_repository.go (81.8%)</option>
+				<option value="file6">training-partner/internal/repositories/muscle_repository.go (100.0%)</option>
 				
-				<option value="file7">training-partner/internal/repositories/training_set_repository.go (82.4%)</option>
+				<option value="file7">training-partner/internal/repositories/training_set_repository.go (100.0%)</option>
 				
 				<option value="file8">training-partner/internal/usecases/exercise_usecase.go (100.0%)</option>
 				
@@ -339,7 +339,7 @@ func NewExerciseRepository(db *gorm.DB) ExerciseRepository <span class="cov8" ti
 func (r *exerciseRepository) GetAll() ([]*domains.Exercise, error) <span class="cov8" title="1">{
         r.db.Logger = r.db.Logger.LogMode(logger.Info)
         var exercises []*domains.Exercise
-        if err := r.db.Preload("Muscles").Find(&amp;exercises).Error; err != nil </span><span class="cov0" title="0">{
+        if err := r.db.Preload("Muscles").Find(&amp;exercises).Error; err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
         <span class="cov8" title="1">return exercises, nil</span>
@@ -348,7 +348,7 @@ func (r *exerciseRepository) GetAll() ([]*domains.Exercise, error) <span class="
 func (r *exerciseRepository) FindById(id int) (*domains.Exercise, error) <span class="cov8" title="1">{
         r.db.Logger = r.db.Logger.LogMode(logger.Info)
         var exercise *domains.Exercise
-        if err := r.db.Preload("Muscles").Find(&amp;exercise, id).Error; err != nil </span><span class="cov0" title="0">{
+        if err := r.db.Preload("Muscles").Find(&amp;exercise, id).Error; err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
         <span class="cov8" title="1">return exercise, nil</span>
@@ -383,7 +383,7 @@ func NewMenuRepository(db *gorm.DB) MenuRepository <span class="cov8" title="1">
 func (r *menuRepository) GetAll() ([]*domains.Menu, error) <span class="cov8" title="1">{
         r.db.Logger = r.db.Logger.LogMode(logger.Info)
         var menus []*domains.Menu
-        if err := r.db.Preload("TrainingSets").Find(&amp;menus).Error; err != nil </span><span class="cov0" title="0">{
+        if err := r.db.Preload("TrainingSets").Find(&amp;menus).Error; err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
         <span class="cov8" title="1">return menus, nil</span>
@@ -392,7 +392,7 @@ func (r *menuRepository) GetAll() ([]*domains.Menu, error) <span class="cov8" ti
 func (r *menuRepository) FindById(id int) (*domains.Menu, error) <span class="cov8" title="1">{
         r.db.Logger = r.db.Logger.LogMode(logger.Info)
         var menu *domains.Menu
-        if err := r.db.Preload("TrainingSets").Find(&amp;menu, id).Error; err != nil </span><span class="cov0" title="0">{
+        if err := r.db.Preload("TrainingSets").Find(&amp;menu, id).Error; err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
         <span class="cov8" title="1">return menu, nil</span>
@@ -405,7 +405,7 @@ func (r *menuRepository) Create(date time.Time) error <span class="cov8" title="
         }
 
         return r.db.Transaction(func(tx *gorm.DB) error </span><span class="cov8" title="1">{
-                if err := tx.Create(&amp;menu).Error; err != nil </span><span class="cov0" title="0">{
+                if err := tx.Create(&amp;menu).Error; err != nil </span><span class="cov8" title="1">{
                         return err
                 }</span>
 
@@ -439,7 +439,7 @@ func NewMuscleRepository(db *gorm.DB) MuscleRepository <span class="cov8" title=
 func (r *muscleRepository) GetAll() ([]*domains.Muscle, error) <span class="cov8" title="1">{
         r.db.Logger = r.db.Logger.LogMode(logger.Info)
         var muscles []*domains.Muscle
-        if err := r.db.Find(&amp;muscles).Error; err != nil </span><span class="cov0" title="0">{
+        if err := r.db.Find(&amp;muscles).Error; err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
         <span class="cov8" title="1">return muscles, nil</span>
@@ -448,7 +448,7 @@ func (r *muscleRepository) GetAll() ([]*domains.Muscle, error) <span class="cov8
 func (r *muscleRepository) FindById(id int) (*domains.Muscle, error) <span class="cov8" title="1">{
         r.db.Logger = r.db.Logger.LogMode(logger.Info)
         var muscle *domains.Muscle
-        if err := r.db.Find(&amp;muscle, id).Error; err != nil </span><span class="cov0" title="0">{
+        if err := r.db.Find(&amp;muscle, id).Error; err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
         <span class="cov8" title="1">return muscle, nil</span>
@@ -482,7 +482,7 @@ func NewTrainingSetRepository(db *gorm.DB) TrainingSetRepository <span class="co
 func (r *trainingSetRepository) GetAll() ([]*domains.TrainingSet, error) <span class="cov8" title="1">{
         r.db.Logger = r.db.Logger.LogMode(logger.Info)
         var trainingSets []*domains.TrainingSet
-        if err := r.db.Find(&amp;trainingSets).Error; err != nil </span><span class="cov0" title="0">{
+        if err := r.db.Find(&amp;trainingSets).Error; err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
         <span class="cov8" title="1">return trainingSets, nil</span>
@@ -491,7 +491,7 @@ func (r *trainingSetRepository) GetAll() ([]*domains.TrainingSet, error) <span c
 func (r *trainingSetRepository) FindById(id int) (*domains.TrainingSet, error) <span class="cov8" title="1">{
         r.db.Logger = r.db.Logger.LogMode(logger.Info)
         var trainingSet *domains.TrainingSet
-        if err := r.db.Find(&amp;trainingSet, id).Error; err != nil </span><span class="cov0" title="0">{
+        if err := r.db.Find(&amp;trainingSet, id).Error; err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
         <span class="cov8" title="1">return trainingSet, nil</span>
@@ -506,7 +506,7 @@ func (r *trainingSetRepository) Create(exerciseId uint, weight uint, repetition 
         }
 
         return r.db.Transaction(func(tx *gorm.DB) error </span><span class="cov8" title="1">{
-                if err := tx.Create(&amp;trainingSet).Error; err != nil </span><span class="cov0" title="0">{
+                if err := tx.Create(&amp;trainingSet).Error; err != nil </span><span class="cov8" title="1">{
                         return err
                 }</span>
 
