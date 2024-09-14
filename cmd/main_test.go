@@ -111,3 +111,48 @@ func TestCreateTrainingSets(t *testing.T) {
 	// asset
 	assert.Equal(t, 200, w.Code)
 }
+
+func TestMenus(t *testing.T) {
+	db, _ := setupDB()
+
+	router := setupRouter(db)
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/menus", nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, "", w.Body.String())
+}
+
+func TestFindMenu(t *testing.T) {
+	db, _ := setupDB()
+
+	router := setupRouter(db)
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/menus/1", nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
+	assert.Equal(t, "{\"MenuId\":1,\"Date\":\"2024-09-01T00:00:00Z\",\"TrainingSets\":[{\"TrainingSetId\":1,\"ExerciseId\":1,\"Weight\":95,\"Repetition\":10}]}", w.Body.String())
+}
+
+func TestCreateMenu(t *testing.T) {
+	// arrange
+	db, _ := setupDB()
+	router := setupRouter(db)
+	w := httptest.NewRecorder()
+
+	data := url.Values{}
+	data.Set("date", "20240901")
+
+	req, _ := http.NewRequest(http.MethodPost, "/menus/create", strings.NewReader(data.Encode()))
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	// act
+	router.ServeHTTP(w, req)
+
+	// asset
+	assert.Equal(t, 200, w.Code)
+}
