@@ -63,7 +63,7 @@ func TestTrainingSetRepositoryFindById(t *testing.T) {
 	}
 	trainingSetRepository := repositories.NewTrainingSetRepository(mockDB)
 
-	t.Run("正常に値を取得できた場合、対応するExerciseを返す", func(t *testing.T) {
+	t.Run("正常に値を取得できた場合、対応するTrainingSetを返す", func(t *testing.T) {
 		mock.
 			ExpectQuery(
 				regexp.QuoteMeta("SELECT * FROM `training_sets` WHERE `training_sets`.`training_set_id` = ?")).
@@ -118,6 +118,9 @@ func TestTrainingSetRepositoryCreate(t *testing.T) {
 		err = trainingSetRepository.Create(uint(1), uint(105), uint(10))
 
 		assert.Equal(t, nil, err)
+		if err != nil {
+			t.Fatal(err)
+		}
 		if err := mock.ExpectationsWereMet(); err != nil {
 			t.Errorf("Test Create TrainingSet: %v", err)
 		}
@@ -134,8 +137,7 @@ func TestTrainingSetRepositoryCreate(t *testing.T) {
 			t.Errorf("error is expected, but error not occured")
 		}
 		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Errorf("Test Create Menu: %v", err)
+			t.Errorf("Test Create Training Set: %v", err)
 		}
 	})
-
 }

@@ -18,7 +18,7 @@ func TestMenuRepositoryGetAll(t *testing.T) {
 	}
 	menuRepository := repositories.NewMenuRepository(mockDB)
 
-	t.Run("正常に値を取得できた場合、Exerciseを全て返す", func(t *testing.T) {
+	t.Run("正常に値を取得できた場合、Menuを全て返す", func(t *testing.T) {
 		mock.
 			ExpectQuery(
 				regexp.QuoteMeta("SELECT * FROM `menus`")).
@@ -44,8 +44,11 @@ func TestMenuRepositoryGetAll(t *testing.T) {
 
 		assert.Equal(t, nil, err)
 		assert.Equal(t, time.Date(2020, 4, 1, 0, 0, 0, 0, time.UTC), menus[0].Date)
+		if err != nil {
+			t.Fatal(err)
+		}
 		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Errorf("Test Find Exercises: %v", err)
+			t.Errorf("Test Find Menus: %v", err)
 		}
 	})
 
@@ -73,7 +76,7 @@ func TestMenuRepositoryFindById(t *testing.T) {
 	}
 	menuRepository := repositories.NewMenuRepository(mockDB)
 
-	t.Run("正常に値を取得できた場合、Exerciseを全て返す", func(t *testing.T) {
+	t.Run("正常に値を取得できた場合、対応するMenuを返す", func(t *testing.T) {
 		mock.
 			ExpectQuery(
 				regexp.QuoteMeta("SELECT * FROM `menus` WHERE `menus`.`menu_id` = ?")).
@@ -100,6 +103,12 @@ func TestMenuRepositoryFindById(t *testing.T) {
 
 		assert.Equal(t, nil, err)
 		assert.Equal(t, time.Date(2020, 4, 1, 0, 0, 0, 0, time.UTC), menu.Date)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := mock.ExpectationsWereMet(); err != nil {
+			t.Errorf("Test Find Menus: %v", err)
+		}
 	})
 
 	t.Run("正常に値を取得できない場合、エラーを返す", func(t *testing.T) {
@@ -135,6 +144,9 @@ func TestMenuRepositoryCreate(t *testing.T) {
 		err = menuRepository.Create(time.Date(2024, 12, 1, 0, 0, 0, 0, time.UTC))
 
 		assert.Equal(t, nil, err)
+		if err != nil {
+			t.Fatal(err)
+		}
 		if err := mock.ExpectationsWereMet(); err != nil {
 			t.Errorf("Test Create Menu: %v", err)
 		}
@@ -154,5 +166,4 @@ func TestMenuRepositoryCreate(t *testing.T) {
 			t.Errorf("Test Create Menu: %v", err)
 		}
 	})
-
 }

@@ -57,6 +57,9 @@ func TestExerciseRepositoryGetAll(t *testing.T) {
 
 		assert.Equal(t, nil, err)
 		assert.Equal(t, uint(1), exercises[0].ExerciseId)
+		if err != nil {
+			t.Fatal(err)
+		}
 		if err := mock.ExpectationsWereMet(); err != nil {
 			t.Errorf("Test Find Exercises: %v", err)
 		}
@@ -113,6 +116,9 @@ func TestExerciseRepositoryFindById(t *testing.T) {
 
 		assert.Equal(t, nil, err)
 		assert.Equal(t, "スクワット", exercise.Name)
+		if err != nil {
+			t.Fatal(err)
+		}
 		if err := mock.ExpectationsWereMet(); err != nil {
 			t.Errorf("Test Find Exercises: %v", err)
 		}

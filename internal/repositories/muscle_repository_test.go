@@ -61,7 +61,7 @@ func TestMuscleRepositoryFindById(t *testing.T) {
 	}
 	muscleRepository := repositories.NewMuscleRepository(mockDB)
 
-	t.Run("正常に値を取得できた場合、Muscleを全て返す", func(t *testing.T) {
+	t.Run("正常に値を取得できた場合、対応するMuscleを返す", func(t *testing.T) {
 		mock.
 			ExpectQuery(
 				regexp.QuoteMeta("SELECT * FROM `muscles` WHERE `muscles`.`muscle_id` = ?")).
