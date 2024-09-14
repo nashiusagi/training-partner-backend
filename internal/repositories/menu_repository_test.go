@@ -22,3 +22,17 @@ func TestMenuRepositoryGetAll(t *testing.T) {
 	assert.Equal(t, 2, len(menus))
 	assert.Equal(t, time.Date(2024, 9, 1, 0, 0, 0, 0, time.UTC), menus[0].Date)
 }
+
+func TestMenuRepositoryFindById(t *testing.T) {
+	mockDB, _, err := NewDbMock()
+
+	if err != nil {
+		t.Errorf("Failed to initialize mock DB: %v", err)
+	}
+
+	menuRepository := repositories.NewMenuRepository(mockDB)
+	menu, err := menuRepository.FindById(1)
+
+	assert.Equal(t, nil, err)
+	assert.Equal(t, time.Date(2024, 9, 1, 0, 0, 0, 0, time.UTC), menu.Date)
+}

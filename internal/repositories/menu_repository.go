@@ -10,6 +10,7 @@ import (
 //go:generate mockery --name MenuRepository
 type MenuRepository interface {
 	GetAll() ([]*domains.Menu, error)
+	FindById(id int) (*domains.Menu, error)
 }
 
 type menuRepository struct {
@@ -27,4 +28,13 @@ func (r *menuRepository) GetAll() ([]*domains.Menu, error) {
 		return nil, err
 	}
 	return menus, nil
+}
+
+func (r *menuRepository) FindById(id int) (*domains.Menu, error) {
+	r.db.Logger = r.db.Logger.LogMode(logger.Info)
+	var menu *domains.Menu
+	if err := r.db.Preload("TrainingSets").Find(&menu, id).Error; err != nil {
+		return nil, err
+	}
+	return menu, nil
 }
