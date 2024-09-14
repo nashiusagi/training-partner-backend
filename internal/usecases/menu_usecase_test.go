@@ -13,6 +13,7 @@ import (
 
 func TestMenuUseCaseGetAll(t *testing.T) {
 	mockMenuRepository := new(mocks.MenuRepository)
+	menuUseCase := usecases.NewMenuUsecase(mockMenuRepository)
 
 	t.Run("正常に値を取得できる", func(t *testing.T) {
 		mockMenus := []*domains.Menu{
@@ -29,10 +30,7 @@ func TestMenuUseCaseGetAll(t *testing.T) {
 				},
 			},
 		}
-
 		mockMenuRepository.On("GetAll", mock.Anything).Return(mockMenus, nil).Once()
-
-		menuUseCase := usecases.NewMenuUsecase(mockMenuRepository)
 
 		menus, err := menuUseCase.GetAll()
 
@@ -44,6 +42,7 @@ func TestMenuUseCaseGetAll(t *testing.T) {
 
 func TestMenuUseCaseFindById(t *testing.T) {
 	mockMenuRepository := new(mocks.MenuRepository)
+	menuUseCase := usecases.NewMenuUsecase(mockMenuRepository)
 
 	t.Run("正常に値を取得できる", func(t *testing.T) {
 		mockMenu := domains.Menu{
@@ -58,10 +57,7 @@ func TestMenuUseCaseFindById(t *testing.T) {
 				},
 			},
 		}
-
 		mockMenuRepository.On("FindById", 1).Return(&mockMenu, nil).Once()
-
-		menuUseCase := usecases.NewMenuUsecase(mockMenuRepository)
 
 		menu, err := menuUseCase.FindById(1)
 
@@ -73,12 +69,11 @@ func TestMenuUseCaseFindById(t *testing.T) {
 
 func TestMenuUseCaseCreate(t *testing.T) {
 	mockMenuRepository := new(mocks.MenuRepository)
+	menuUseCase := usecases.NewMenuUsecase(mockMenuRepository)
 
-	t.Run("success", func(t *testing.T) {
+	t.Run("正常にMenuを作成できる", func(t *testing.T) {
 		var dummyDate = time.Date(2024, 9, 1, 0, 0, 0, 0, time.UTC)
 		mockMenuRepository.On("Create", dummyDate).Return(nil).Once()
-
-		menuUseCase := usecases.NewMenuUsecase(mockMenuRepository)
 
 		err := menuUseCase.Create(dummyDate)
 

@@ -12,8 +12,9 @@ import (
 
 func TestTrainigSetUseCaseGetAll(t *testing.T) {
 	mockTrainingSetRepository := new(mocks.TrainingSetRepository)
+	trainingSetUseCase := usecases.NewTrainingSetUsecase(mockTrainingSetRepository)
 
-	t.Run("success", func(t *testing.T) {
+	t.Run("正常に値を取得できる", func(t *testing.T) {
 		mockTrainingSets := []*domains.TrainingSet{
 			{
 				TrainingSetId: uint(1),
@@ -22,10 +23,7 @@ func TestTrainigSetUseCaseGetAll(t *testing.T) {
 				Repetition:    uint(10),
 			},
 		}
-
 		mockTrainingSetRepository.On("GetAll", mock.Anything).Return(mockTrainingSets, nil).Once()
-
-		trainingSetUseCase := usecases.NewTrainingSetUsecase(mockTrainingSetRepository)
 
 		trainingSets, err := trainingSetUseCase.GetAll()
 
@@ -37,18 +35,16 @@ func TestTrainigSetUseCaseGetAll(t *testing.T) {
 
 func TestTrainigSetUseCaseFindById(t *testing.T) {
 	mockTrainingSetRepository := new(mocks.TrainingSetRepository)
+	trainingSetUseCase := usecases.NewTrainingSetUsecase(mockTrainingSetRepository)
 
-	t.Run("success", func(t *testing.T) {
+	t.Run("正常に値を取得できる", func(t *testing.T) {
 		mockTrainingSet := domains.TrainingSet{
 			TrainingSetId: uint(1),
 			ExerciseId:    uint(1),
 			Weight:        uint(95),
 			Repetition:    uint(10),
 		}
-
 		mockTrainingSetRepository.On("FindById", 1).Return(&mockTrainingSet, nil).Once()
-
-		trainingSetUseCase := usecases.NewTrainingSetUsecase(mockTrainingSetRepository)
 
 		trainingSet, err := trainingSetUseCase.FindById(1)
 
@@ -59,11 +55,10 @@ func TestTrainigSetUseCaseFindById(t *testing.T) {
 
 func TestTrainigSetUseCaseCreate(t *testing.T) {
 	mockTrainingSetRepository := new(mocks.TrainingSetRepository)
+	trainingSetUseCase := usecases.NewTrainingSetUsecase(mockTrainingSetRepository)
 
-	t.Run("success", func(t *testing.T) {
+	t.Run("正常にTrainingSetを作成できる", func(t *testing.T) {
 		mockTrainingSetRepository.On("Create", uint(1), uint(105), uint(10)).Return(nil).Once()
-
-		trainingSetUseCase := usecases.NewTrainingSetUsecase(mockTrainingSetRepository)
 
 		err := trainingSetUseCase.Create(uint(1), uint(105), uint(10))
 
