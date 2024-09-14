@@ -12,6 +12,7 @@ import (
 
 func TestExerciseUseCaseGetAll(t *testing.T) {
 	mockExerciseRepository := new(mocks.ExerciseRepository)
+	exerciseUseCase := usecases.NewExerciseUsecase(mockExerciseRepository)
 
 	t.Run("正常に値を取得できる", func(t *testing.T) {
 		mockExercises := []*domains.Exercise{
@@ -27,22 +28,33 @@ func TestExerciseUseCaseGetAll(t *testing.T) {
 					},
 				},
 			},
+			{
+				ExerciseId:   uint(2),
+				Name:         "レッグプレス",
+				RegisteredId: uint(105),
+				Muscles: []domains.Muscle{
+					{
+						MuscleId:   uint(4),
+						Name:       "筋肉2",
+						BodyPartId: uint(1004),
+					},
+				},
+			},
 		}
-
 		mockExerciseRepository.On("GetAll", mock.Anything).Return(mockExercises, nil).Once()
-
-		exerciseUseCase := usecases.NewExerciseUsecase(mockExerciseRepository)
 
 		exercises, err := exerciseUseCase.GetAll()
 
 		assert.NoError(t, err)
-		assert.NotNil(t, exercises)
-		assert.Equal(t, exercises[0].Name, "スクワット")
+		assert.Equal(t, 2, len(exercises))
+		assert.Equal(t, "スクワット", exercises[0].Name)
+		assert.Equal(t, "筋肉2", exercises[1].Muscles[0].Name)
 	})
 }
 
 func TestExerciseUseCaseFindById(t *testing.T) {
 	mockExerciseRepository := new(mocks.ExerciseRepository)
+	exerciseUseCase := usecases.NewExerciseUsecase(mockExerciseRepository)
 
 	t.Run("正常に値を取得できる", func(t *testing.T) {
 		mockExercise := domains.Exercise{
@@ -57,15 +69,12 @@ func TestExerciseUseCaseFindById(t *testing.T) {
 				},
 			},
 		}
-
 		mockExerciseRepository.On("FindById", 1).Return(&mockExercise, nil).Once()
-
-		exerciseUseCase := usecases.NewExerciseUsecase(mockExerciseRepository)
 
 		exercise, err := exerciseUseCase.FindById(1)
 
 		assert.NoError(t, err)
 		assert.NotNil(t, exercise)
-		assert.Equal(t, exercise.Name, "レッグプレス")
+		assert.Equal(t, "レッグプレス", exercise.Name)
 	})
 }
